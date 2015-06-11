@@ -142,9 +142,6 @@ CFLAGS += ${addprefix -D,${subst $(COMMA), ,$(DEFINES)}}
 
 CONTIKI_TARGET_DIRS_CONCAT = ${addprefix ${dir $(target_makefile)}, \
                                $(CONTIKI_TARGET_DIRS)}
-
-$(info $(CONTIKI_TARGET_DIRS_CONCAT))
-
 CONTIKI_CPU_DIRS_CONCAT    = ${addprefix $(CONTIKI_CPU)/, \
                                $(CONTIKI_CPU_DIRS)}
 

@@ -45,7 +45,6 @@
  */
 
 #include "contiki-conf.h"
-
 #include "sys/etimer.h"
 #include "sys/process.h"
 

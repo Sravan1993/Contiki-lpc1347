@@ -43,6 +43,64 @@ clock_time(void)
   return current_clock;
 }
 
+/**************************************************************************/
+/*!
+    @brief Causes a blocking delay on the specified 16-bit timer
+
+    @param[in]  timer
+                The 16-bit timer to use (must be 0 or 1)
+    @param[in]  delayInUSecs
+                The number of microseconds to wait
+*/
+/**************************************************************************/
+void timer16DelayUSecs(uint8_t timer, uint16_t delayInUSecs)
+{
+  if (timer == 0)
+  {
+    LPC_CT16B0->TCR  = 0x02;            /* Reset the timer */
+    LPC_CT16B0->PR   = SystemCoreClock / 1000000 - 1;            /* Set prescaler: TC is incremented every microsecond */
+    LPC_CT16B0->PWMC = 0x00;            /* Disable PWM mode */
+    LPC_CT16B0->MR0  = delayInUSecs;
+    LPC_CT16B0->IR   = 0xff;            /* Reset all interrrupts */
+    LPC_CT16B0->MCR  = 0x04;            /* Stop the timer on match */
+    LPC_CT16B0->TCR  = 0x01;            /* Start timer */
+
+    /* Wait until delay time has elapsed */
+    while (LPC_CT16B0->TCR & 0x01);
+  }
+  else if (timer == 1)
+  {
+    LPC_CT16B1->TCR  = 0x02;            /* Reset the timer */
+    LPC_CT16B1->PR   = SystemCoreClock / 1000000 - 1;;            /* Set prescaler: TC is incremented every microsecond */
+    LPC_CT16B1->PWMC = 0x00;            /* Disable PWM mode */
+    LPC_CT16B1->MR0  = delayInUSecs;
+    LPC_CT16B1->IR   = 0xff;            /* Reset all interrrupts */
+    LPC_CT16B1->MCR  = 0x04;            /* Stop the timer on match */
+    LPC_CT16B1->TCR  = 0x01;            /* Start timer */
+
+    /* Wait until delay time has elapsed */
+    while (LPC_CT16B1->TCR & 0x01);
+  }
+  return;
+}
+
+
+void
+clock_delay_usec(uint16_t dt)
+{
+    timer16DelayUSecs(0, dt);
+}
+
+/*
+ * Deprecated platform-specific routines.
+ *
+ */
+void
+clock_delay(unsigned int t)
+{
+    clock_delay_usec(t);
+}
+
 #if 0
 /* The inner loop takes 4 cycles. The outer 5+SPIN_COUNT*4. */
 

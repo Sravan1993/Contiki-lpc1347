@@ -13,10 +13,10 @@ CONTIKI_CPU=$(CONTIKI_CPU_ARM)/lpc1347
 #					$(USB_DEVICE_CLASS_CDC_PATH) \
 #					$(CMSIS_DIR) $(CMSIS_INCLUDE)
 
-CONTIKI_CPU_DIRS = . ../common/CMSIS
-					#$(CONTIKI_CPU_ARM)/common/
+CONTIKI_CPU_DIRS = . 
+CONTIKI_CPU_DIRS += ./common/CMSIS $(CONTIKI_CPU_ARM)/common/
 
-LPC1347 = clock.c system_LPC13Uxx.c rtimer-arch.c cr_startup_lpc13u.c
+LPC1347 = clock.c system_LPC13Uxx.c rtimer-arch.c cr_startup_lpc13u.c gpio.c
 
 #TARGETLIBS =	$(STDPERIPH_SRC) $(USB_OTG_SRC) $(USB_DEVICE_CORE_SRC) \
 #				$(USB_DEVICE_CLASS_CDC_SRC) random.c watchdog.c \
@@ -77,16 +77,16 @@ ARCH_FLAGS = -mlittle-endian -mthumb -mcpu=cortex-m3
 # or soft float
 #ARCH_FLAGS += -msoft-float
 
-CFLAGSNO = -I. -I$(CONTIKI)/core -I$(CONTIKI_CPU) -I$(CONTIKI_CPU)/loader \
+CFLAGSNO = -I. -I$(CONTIKI)/core -I$(CONTIKI_CPU) -I$(CONTIKI_CPU)/loader -I$(CONTIKI_CPU_ARM)/common/CMSIS \
            -I$(CONTIKI)/platform/$(TARGET) \
-           ${addprefix -I,$(APPDIRS)} 	-DWITH_ASCII -DMCK=$(MCK) \
-           -Wall $(ARCH_FLAGS) \
+           ${addprefix -I,$(APPDIRS)}  -DWITH_ASCII -DMCK=$(MCK) \
+           -Wall $(ARCH_FLAGS) -g \
            -Wno-strict-aliasing
 
 # CMSIS lib
-#CFLAGS 		+= -D__FPU_PRESENT=1 -D__FPU_USED=1 -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING
+#CFLAGS += -D__FPU_PRESENT=1 -D__FPU_USED=1 -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING
 
-CFLAGS  += $(CFLAGSNO) -DRUN_AS_SYSTEM -DROM_RUN
+CFLAGS += $(CFLAGSNO) -DRUN_AS_SYSTEM -DROM_RUN
 LDFLAGS += -L $(CONTIKI_CPU) -T $(LINKERSCRIPT) \
            -nostartfiles
 
@@ -98,7 +98,6 @@ endif
 
 CDEPFLAGS = $(CFLAGS) -D __MAKING_DEPS__
 
-
 ### Setup directory search path for source files
 
 CUSTOM_RULE_C_TO_OBJECTDIR_O=yes
@@ -107,7 +106,7 @@ CUSTOM_RULE_C_TO_O=yes
 %.o: %.c
 	$(CC) $(CFLAGS) $< -c
 
-$(OBJECTDIR)/%.o: %.c
+$(OBJECTDIR)/%.o: %.c | $(OBJECTDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
@@ -115,7 +114,7 @@ CUSTOM_RULE_S_TO_OBJECTDIR_O = yes
 %.o: %.S
 	$(CC) $(CFLAGS) $< -c
 
-$(OBJECTDIR)/%.o: %.S
+$(OBJECTDIR)/%.o: %.S | $(OBJECTDIR)
 	$(CC) $(CFLAGS) $< -c  -o $@
 
 
@@ -142,8 +141,8 @@ CUSTOM_RULE_LINK=yes
 %.o: ${CONTIKI_TARGET}/loader/%.S
 	$(AS) -o $(notdir $(<:.S=.o)) $<
 
-%-nosyms.$(TARGET).elf: %.co $(PROJECT_OBJECTFILES) $(INTERRUPT_OBJECTFILES) contiki-$(TARGET).a
-	$(CC) $(CFLAGS) -o $@ $(filter-out %.a,$^) $(filter %.a,$^) $(filter %.a,$^) $(LDFLAGS)
+%-nosyms.$(TARGET): %.co $(PROJECT_OBJECTFILES) contiki-$(TARGET).a $(STARTUP) # $(OBJECTDIR)/empty-symbols.o
+	$(CC) $(LDFLAGS) $(CFLAGS) -nostartfiles -o $@ $(filter-out %.a,$^) $(filter %.a,$^) -lc $(filter %.a,$^)
 
 
 %.ihex: %.$(TARGET)
@@ -151,11 +150,11 @@ CUSTOM_RULE_LINK=yes
 
 %.bin: %.$(TARGET)
 	$(OBJCOPY) -O binary $< $@
- 
+
 .PHONY: symbols.c
 ifdef CORE
-%.$(TARGET): %.co $(PROJECT_OBJECTFILES) $(INTERRUPT_OBJECTFILES) contiki-$(TARGET).a $(OBJECTDIR)/symbols.o
-	$(CC) $(LDFLAGS) $(CFLAGS) -o $@ $(filter-out %.a,$^) $(filter %.a,$^) $(filter %.a,$^)
+%.$(TARGET): %.co $(PROJECT_OBJECTFILES) contiki-$(TARGET).a $(STARTUP) $(OBJECTDIR)/symbols.o
+	$(CC) $(LDFLAGS) $(CFLAGS) -nostartfiles -o $@ $(filter-out %.a,$^) $(filter %.a,$^) -lc $(filter %.a,$^)
 
 symbols.c: $(CORE)
 	$(NM) $< | awk -f $(CONTIKI_CPU)/builtins.awk -f ../../tools/mknmlist > symbols.c
@@ -170,27 +169,13 @@ empty-symbols.c:
 	cp ${CONTIKI}/tools/empty-symbols.h symbols.h
 
 
-#ifeq ($(PROG),openocd)
-#%.u: %-nosyms.$(TARGET).elf
-#	openocd -f interface/stlink-v2.cfg -c "set WORKAREASIZE 0x2000" -f target/stm32f4x_stlink.cfg -c "program $< verify reset"
-#else ifeq ($(PROG),qstlink)
-#%.u: %.bin
-#	qstlink2 --cli --erase --write $<
-#endif
-#
-#upload: $(CONTIKI_PROJECT).u
-
 # Don't use core/loader/elfloader.c, use elfloader-otf.c instead
-$(OBJECTDIR)/elfloader.o: 
+$(OBJECTDIR)/elfloader.o: | $(OBJECTDIR)
 	echo -n >$@
 
 clean: clean_cpu
 
-#.PHONY: stm32_bv_clean
-
 clean_cpu:
 	-rm -rf $(BUILTSRCDIR)
-	-rm -rf $(CONTIKI_PROJECT)-nosyms.$(TARGET).elf
-	-rm -rf $(CONTIKI_PROJECT).$(TARGET)
 
-.PRECIOUS: %-nosyms.$(TARGET).elf
+.PRECIOUS: %-nosyms.$(TARGET)

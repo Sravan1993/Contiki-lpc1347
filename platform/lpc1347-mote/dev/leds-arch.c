@@ -6,7 +6,6 @@
 #include "contiki.h"
 #include "dev/leds.h"
 #include "LPC13Uxx.h"
-#include "
 
 static int green_on = 0;
 static int yellow_on = 0;
