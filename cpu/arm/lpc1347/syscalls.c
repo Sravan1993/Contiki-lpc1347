@@ -69,6 +69,14 @@ register char * stack_ptr asm ("sp");
 	return (caddr_t) prev_heap_end;
 }
 */
+
+caddr_t
+_sbrk(int incr)
+{
+	return 0;
+}
+
+
 int _write(int file, char *ptr, int len) {
 #if PRINTF_VCP
 	VCP_send_buffer((uint8_t*)ptr, len);
