@@ -10,7 +10,7 @@ MCK=72000000
 
 SENSORS += sensors.c #radio-sensor.c button-sensor.c
 
-CFLAGS+=-DAUTOSTART_ENABLE
+CFLAGS+=-DAUTOSTART_ENABLE -DUIP_CONF_IPV6
 ARCH = leds.c leds-arch.c
 
 ifndef CONTIKI_TARGET_MAIN

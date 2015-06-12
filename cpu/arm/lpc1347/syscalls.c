@@ -49,7 +49,7 @@ int _read(int file, char *ptr, int len) {
 // Register name faking - works in collusion with the linker.
 register char * stack_ptr asm ("sp");
 
-caddr_t _sbrk_r (struct _reent *r, int incr) {
+/*caddr_t _sbrk_r (struct _reent *r, int incr) {
 	extern char   end asm ("end"); // Defined by the linker.
 	static char * heap_end;
 	char *        prev_heap_end;
@@ -68,7 +68,7 @@ caddr_t _sbrk_r (struct _reent *r, int incr) {
 
 	return (caddr_t) prev_heap_end;
 }
-
+*/
 int _write(int file, char *ptr, int len) {
 #if PRINTF_VCP
 	VCP_send_buffer((uint8_t*)ptr, len);

@@ -16,8 +16,6 @@ endif
 
 ifeq ($(UIP_CONF_IPV6),1)
   CFLAGS += -DUIP_CONF_IPV6=1
-else 
-  -DUIP_CONF_IPV6=0
 endif
 
 ifeq ($(DEFINES),)
