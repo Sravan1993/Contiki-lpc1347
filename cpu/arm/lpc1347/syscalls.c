@@ -3,7 +3,7 @@
 //#include "stm32f4xx_conf.h"
 //#include "usbd_cdc_vcp.h"
 #include "contiki-conf.h"
-#include "debug-buffer.h"
+//#include "debug-buffer.h"
 
 //ds
 #include <time.h>
@@ -38,10 +38,10 @@ int _read(int file, char *ptr, int len) {
 	}
 
 	// Use USB CDC Port for stdin
-	while(!VCP_get_char((uint8_t*)ptr)){};
+	//while(!VCP_get_char((uint8_t*)ptr)){};
 
 	// Echo typed characters
-	VCP_put_char((uint8_t)*ptr);
+	//VCP_put_char((uint8_t)*ptr);
 
 	return 1;
 }
@@ -74,7 +74,7 @@ int _write(int file, char *ptr, int len) {
 	VCP_send_buffer((uint8_t*)ptr, len);
 	return len;
 #else
-	debug_buffer_append(ptr, len);
+	//debug_buffer_append(ptr, len);
 	return len;
 #endif
 }

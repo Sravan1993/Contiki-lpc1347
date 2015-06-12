@@ -16,7 +16,7 @@ CONTIKI_CPU=$(CONTIKI_CPU_ARM)/lpc1347
 CONTIKI_CPU_DIRS = . 
 CONTIKI_CPU_DIRS += ./common/CMSIS $(CONTIKI_CPU_ARM)/common/
 
-LPC1347 = clock.c system_LPC13Uxx.c rtimer-arch.c cr_startup_lpc13u.c gpio.c
+LPC1347 = clock.c system_LPC13Uxx.c rtimer-arch.c cr_startup_lpc13u.c gpio.c syscalls.c
 
 #TARGETLIBS =	$(STDPERIPH_SRC) $(USB_OTG_SRC) $(USB_DEVICE_CORE_SRC) \
 #				$(USB_DEVICE_CLASS_CDC_SRC) random.c watchdog.c \
