@@ -76,13 +76,6 @@ is_broadcast_addr(uint8_t mode, uint8_t *addr)
 }
 /*---------------------------------------------------------------------------*/
 static int
-hdr_length(void)
-{
-  /* never adds any header */
-  return 0;
-}
-/*---------------------------------------------------------------------------*/
-static int
 create(void)
 {
   /* nothing extra... */
@@ -104,12 +97,13 @@ parse(void)
         return 0;
       }
       if(!is_broadcast_addr(frame.fcf.dest_addr_mode, frame.dest_addr)) {
-        packetbuf_set_addr(PACKETBUF_ADDR_RECEIVER, (linkaddr_t *)&frame.dest_addr);
+        packetbuf_set_addr(PACKETBUF_ADDR_RECEIVER, (rimeaddr_t *)&frame.dest_addr);
       }
     }
-    packetbuf_set_addr(PACKETBUF_ADDR_SENDER, (linkaddr_t *)&frame.src_addr);
+    packetbuf_set_addr(PACKETBUF_ADDR_SENDER, (rimeaddr_t *)&frame.src_addr);
     packetbuf_set_attr(PACKETBUF_ATTR_PENDING, frame.fcf.frame_pending);
-    packetbuf_set_attr(PACKETBUF_ATTR_MAC_SEQNO, frame.seq);
+    /*    packetbuf_set_attr(PACKETBUF_ATTR_RELIABLE, frame.fcf.ack_required);*/
+    packetbuf_set_attr(PACKETBUF_ATTR_PACKET_ID, frame.seq);
 
     PRINTF("15.4-IN: %2X", frame.fcf.frame_type);
     PRINTADDR(packetbuf_addr(PACKETBUF_ADDR_SENDER));
@@ -122,8 +116,5 @@ parse(void)
 }
 /*---------------------------------------------------------------------------*/
 const struct framer no_framer = {
-  hdr_length,
-  create,
-  framer_canonical_create_and_secure,
-  parse
+  create, parse
 };

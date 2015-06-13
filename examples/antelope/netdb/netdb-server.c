@@ -36,13 +36,12 @@
 
 #include <stdarg.h>
 #include <stdio.h>
-#include <string.h>
 
 #include "contiki.h"
 #include "dev/serial-line.h"
-#include "dev/sht11/sht11.h"
+#include "dev/sht11.h"
 #include "lib/random.h"
-#include "net/rime/rime.h"
+#include "net/rime.h"
 #include "net/rime/mesh.h"
 
 #include "antelope.h"
@@ -72,7 +71,7 @@ PROCESS(netdb_process, "NetDB");
 AUTOSTART_PROCESSES(&netdb_process);
 
 static struct mesh_conn mesh;
-static linkaddr_t reply_addr;
+static rimeaddr_t reply_addr;
 static uint8_t buffer_offset;
 static char buffer[MAX_BUFFER_SIZE];
 /*---------------------------------------------------------------------------*/
@@ -111,7 +110,6 @@ buffer_db_data(const char *format, ...)
   return len;
 }
 /*---------------------------------------------------------------------------*/
-#if !PREPARE_DB
 static void
 take_sample(void)
 {
@@ -125,7 +123,6 @@ take_sample(void)
     printf("DB insertion failed\n");
   }
 }
-#endif /* !PREPARE_DB */
 /*---------------------------------------------------------------------------*/
 static void
 stop_handler(void *ptr)
@@ -266,7 +263,7 @@ timedout(struct mesh_conn *c)
 }
 
 static void
-received(struct mesh_conn *c, const linkaddr_t *from, uint8_t hops)
+received(struct mesh_conn *c, const rimeaddr_t *from, uint8_t hops)
 {
   char *data;
   unsigned len;
@@ -285,7 +282,7 @@ received(struct mesh_conn *c, const linkaddr_t *from, uint8_t hops)
 
   printf("Query received from %d.%d: %s (%d hops)\n",
          from->u8[0], from->u8[1], query, (int)hops);
-  linkaddr_copy(&reply_addr, from);
+  rimeaddr_copy(&reply_addr, from);
 
   process_post(&query_process, serial_line_event_message, query);
 }

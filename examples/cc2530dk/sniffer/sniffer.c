@@ -31,7 +31,7 @@
 #include "cc253x.h"
 
 #define DEBUG DEBUG_NONE
-#include "net/ip/uip-debug.h"
+#include "net/uip-debug.h"
 
 /*---------------------------------------------------------------------------*/
 PROCESS(sniffer_process, "Sniffer process");
