@@ -44,8 +44,8 @@
  * @{
  */
 
-#ifndef LEDS_H_
-#define LEDS_H_
+#ifndef __LEDS_H__
+#define __LEDS_H__
 
 /* Allow platform to override LED numbering */
 #include "contiki-conf.h"
@@ -77,13 +77,13 @@ void leds_blink(void);
 #endif /* LEDS_CONF_ALL */
 
 /**
- * Returns the current status of all leds
+ * Returns the current status of all leds (respects invert)
  */
 unsigned char leds_get(void);
-void leds_set(unsigned char leds);
 void leds_on(unsigned char leds);
 void leds_off(unsigned char leds);
 void leds_toggle(unsigned char leds);
+void leds_invert(unsigned char leds);
 
 /**
  * Leds implementation
@@ -92,7 +92,4 @@ void leds_arch_init(void);
 unsigned char leds_arch_get(void);
 void leds_arch_set(unsigned char leds);
 
-#endif /* LEDS_H_ */
-
-/** @} */
-/** @} */
+#endif /* __LEDS_H__ */

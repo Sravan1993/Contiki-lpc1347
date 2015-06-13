@@ -28,7 +28,7 @@ static struct psock ps;
  * We must have somewhere to put incoming data, and we use a 10 byte
  * buffer for this purpose.
  */
-static uint8_t buffer[10];
+static char buffer[10];
 
 /*---------------------------------------------------------------------------*/
 /*
@@ -90,10 +90,9 @@ PT_THREAD(handle_connection(struct psock *p))
 }
 /*---------------------------------------------------------------------------*/
 /*
- * We declare the process and specify that it should be automatically started.
+ * We declare the process.
  */
 PROCESS(example_psock_server_process, "Example protosocket server");
-AUTOSTART_PROCESSES(&example_psock_server_process);
 /*---------------------------------------------------------------------------*/
 /*
  * The definition of the process.

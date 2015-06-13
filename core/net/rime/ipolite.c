@@ -1,3 +1,8 @@
+/**
+ * \addtogroup rimeipolite
+ * @{
+ */
+
 /*
  * Copyright (c) 2007, Swedish Institute of Computer Science.
  * All rights reserved.
@@ -37,17 +42,19 @@
  *         Adam Dunkels <adam@sics.se>
  */
 
-/**
- * \addtogroup rimeipolite
- * @{
- */
-
-#include "sys/cc.h"
-#include "net/rime/rime.h"
+#include "net/rime.h"
 #include "net/rime/ipolite.h"
 #include "lib/random.h"
 
 #include <string.h>
+
+#ifndef MAX
+#define MAX(a, b) ((a) > (b)? (a) : (b))
+#endif /* MAX */
+
+#ifndef MIN
+#define MIN(a, b) ((a) < (b)? (a) : (b))
+#endif /* MIN */
 
 #define DEBUG 0
 #if DEBUG
@@ -59,7 +66,7 @@
 
 /*---------------------------------------------------------------------------*/
 static void
-recv(struct broadcast_conn *broadcast, const linkaddr_t *from)
+recv(struct broadcast_conn *broadcast, const rimeaddr_t *from)
 {
   struct ipolite_conn *c = (struct ipolite_conn *)broadcast;
   if(c->q != NULL &&
@@ -96,7 +103,7 @@ send(void *ptr)
   struct ipolite_conn *c = ptr;
   
   PRINTF("%d.%d: ipolite: send queuebuf %p\n",
-	 linkaddr_node_addr.u8[0],linkaddr_node_addr.u8[1],
+	 rimeaddr_node_addr.u8[0],rimeaddr_node_addr.u8[1],
 	 c->q);
   
   if(c->q != NULL) {
@@ -139,16 +146,14 @@ ipolite_send(struct ipolite_conn *c, clock_time_t interval, uint8_t hdrsize)
   if(c->q != NULL) {
     /* If we are already about to send a packet, we cancel the old one. */
     PRINTF("%d.%d: ipolite_send: cancel old send\n",
-	   linkaddr_node_addr.u8[0],linkaddr_node_addr.u8[1]);
+	   rimeaddr_node_addr.u8[0],rimeaddr_node_addr.u8[1]);
     queuebuf_free(c->q);
-    c->q = NULL;
-    ctimer_stop(&c->t);
   }
   c->dups = 0;
   c->hdrsize = hdrsize;
   if(interval == 0) {
     PRINTF("%d.%d: ipolite_send: interval 0\n",
-	   linkaddr_node_addr.u8[0],linkaddr_node_addr.u8[1]);
+	   rimeaddr_node_addr.u8[0],rimeaddr_node_addr.u8[1]);
     if(broadcast_send(&c->c)) {
       if(c->cb->sent) {
 	c->cb->sent(c);
@@ -165,7 +170,7 @@ ipolite_send(struct ipolite_conn *c, clock_time_t interval, uint8_t hdrsize)
       return 1;
     }
     PRINTF("%d.%d: ipolite_send: could not allocate queue buffer\n",
-	   linkaddr_node_addr.u8[0],linkaddr_node_addr.u8[1]);
+	   rimeaddr_node_addr.u8[0],rimeaddr_node_addr.u8[1]);
   }
   return 0;
 }

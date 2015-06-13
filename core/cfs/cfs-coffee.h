@@ -1,3 +1,8 @@
+/**
+ * \addtogroup cfs
+ * @{
+ */
+
 /*
  * Copyright (c) 2008, Swedish Institute of Computer Science
  * All rights reserved.
@@ -28,11 +33,6 @@
  *
  * This file is part of the Contiki operating system.
  *
- */
-
-/**
- * \addtogroup cfs
- * @{
  */
 
 #ifndef CFS_COFFEE_H

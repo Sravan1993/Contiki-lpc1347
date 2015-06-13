@@ -23,7 +23,7 @@ PROCESS_THREAD(hello_world_process, ev, data)
 	
 	PROCESS_BEGIN();
 
-	//printf("Hello, world\r\n");
+	printf("Hello, world\r\n");
 	//cc2520_set_txpower(0x13);
 	//printf("TX Power 0x%0X\r\n", cc2520_get_txpower());
 	
@@ -41,8 +41,10 @@ PROCESS_THREAD(hello_world_process, ev, data)
 		/* Wait on our timer */
 		PROCESS_WAIT_EVENT_UNTIL(ev == PROCESS_EVENT_TIMER);
 		
-		leds_toggle(LEDS_GREEN);
-		
+		/*leds_toggle(LEDS_GREEN);
+		clock_delay(1000);
+		leds_toggle(LEDS_GREEN);*/
+		leds_blink();
 		/* reset the timer so we can wait on it again */
 		etimer_reset(&timer);
 	}

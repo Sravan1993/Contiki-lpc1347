@@ -1,3 +1,28 @@
+/**
+ * \addtogroup rime
+ * @{
+ */
+
+/**
+ * \defgroup rimermh Best-effort multihop forwarding
+ * @{
+ *
+ * The rmh module implements a multihop forwarding mechanism. Routes
+ * must have already been setup with the route_add() function. Setting
+ * up routes is done with another Rime module such as the \ref
+ * routediscovery "route-discovery module".
+ *
+ * The hop-by-hop reliable multi-hop unciast primitive is similar to
+ * the best-effot multi-hop unicast primitive except that it uses the
+ * reliable single-hop primitive for the communication between two
+ * single-hop neighbors.
+ *
+ * \section channels Channels
+ *
+ * The rmh module uses 1 channel.
+ *
+ */
+
 /*
  * Copyright (c) 2006, Swedish Institute of Computer Science.
  * All rights reserved.
@@ -37,36 +62,11 @@
  *         Adam Dunkels <adam@sics.se>
  */
 
-/**
- * \addtogroup rime
- * @{
- */
-
-/**
- * \defgroup rimermh Reliable multihop forwarding
- * @{
- *
- * The rmh module implements a multihop forwarding mechanism. Routes
- * must have already been setup with the route_add() function. Setting
- * up routes is done with another Rime module such as the \ref
- * routediscovery "route-discovery module".
- *
- * The hop-by-hop reliable multi-hop unciast primitive is similar to
- * the best-effot multi-hop unicast primitive except that it uses the
- * reliable single-hop primitive for the communication between two
- * single-hop neighbors.
- *
- * \section rmh-channels Channels
- *
- * The rmh module uses 1 channel.
- *
- */
-
-#ifndef RMH_H_
-#define RMH_H_
+#ifndef __RMH_H__
+#define __RMH_H__
 
 #include "net/rime/runicast.h"
-#include "net/linkaddr.h"
+#include "net/rime/rimeaddr.h"
 
 struct rmh_conn;
 
@@ -77,11 +77,11 @@ struct rmh_conn;
                         RUC_ATTRIBUTES
 
 struct rmh_callbacks {
-  void (* recv)(struct rmh_conn *ptr, linkaddr_t *sender, uint8_t hops);
-  linkaddr_t *(* forward)(struct rmh_conn *ptr,
-			  const linkaddr_t *originator,
-			  const linkaddr_t *dest,
-			  const linkaddr_t *prevhop,
+  void (* recv)(struct rmh_conn *ptr, rimeaddr_t *sender, uint8_t hops);
+  rimeaddr_t *(* forward)(struct rmh_conn *ptr,
+			  const rimeaddr_t *originator,
+			  const rimeaddr_t *dest,
+			  const rimeaddr_t *prevhop,
 			  uint8_t hops);
 };
 
@@ -94,9 +94,9 @@ struct rmh_conn {
 void rmh_open(struct rmh_conn *c, uint16_t channel,
 	      const struct rmh_callbacks *u);
 void rmh_close(struct rmh_conn *c);
-int rmh_send(struct rmh_conn *c, linkaddr_t *to, uint8_t num_rexmit,
+int rmh_send(struct rmh_conn *c, rimeaddr_t *to, uint8_t num_rexmit,
 	     uint8_t max_hops);
 
-#endif /* RMH_H_ */
+#endif /* __RMH_H__ */
 /** @} */
 /** @} */

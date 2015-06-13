@@ -1,6 +1,6 @@
 #include "contiki-net.h"
 #include "ctk/ctk.h"
-#include "net/ip/dhcpc.h"
+#include "net/dhcpc.h"
 
 
 
@@ -88,7 +88,7 @@ makestrings(void)
   uip_getdraddr(&addr);
   makeaddr(&addr, gateway);
 
-  addrptr = uip_nameserver_get(0);
+  addrptr = resolv_getserver();
   if(addrptr != NULL) {
     makeaddr(addrptr, dnsserver);
   }
@@ -147,7 +147,7 @@ dhcpc_configured(const struct dhcpc_state *s)
   uip_sethostaddr(&s->ipaddr);
   uip_setnetmask(&s->netmask);
   uip_setdraddr(&s->default_router);
-  uip_nameserver_update(&s->dnsaddr, UIP_NAMESERVER_INFINITE_LIFETIME);
+  resolv_conf(&s->dnsaddr);
   set_statustext("Configured.");
   process_post(PROCESS_CURRENT(), SHOWCONFIG, NULL);
 }

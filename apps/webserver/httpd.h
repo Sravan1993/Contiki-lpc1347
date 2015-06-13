@@ -31,8 +31,8 @@
  *
  */
 
-#ifndef HTTPD_H_
-#define HTTPD_H_
+#ifndef __HTTPD_H__
+#define __HTTPD_H__
 
 
 #include "contiki-net.h"
@@ -59,8 +59,8 @@ struct httpd_state {
 void httpd_init(void);
 void httpd_appcall(void *state);
 
-#if NETSTACK_CONF_WITH_IPV6
+#if UIP_CONF_IPV6
 uint8_t httpd_sprint_ip6(uip_ip6addr_t addr, char * result);
-#endif /* NETSTACK_CONF_WITH_IPV6 */
+#endif /* UIP_CONF_IPV6 */
 
-#endif /* HTTPD_H_ */
+#endif /* __HTTPD_H__ */

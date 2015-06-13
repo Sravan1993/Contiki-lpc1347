@@ -38,22 +38,16 @@
  *         Joakim Eriksson <joakime@sics.se>
  */
 
-#ifndef FRAMER_H_
-#define FRAMER_H_
+#ifndef __FRAMER_H__
+#define __FRAMER_H__
 
 #define FRAMER_FAILED -1
 
 struct framer {
 
-  int (* length)(void);
   int (* create)(void);
-  
-  /** Creates the frame and calls LLSEC.on_frame_created() */
-  int (* create_and_secure)(void);
   int (* parse)(void);
 
 };
 
-int framer_canonical_create_and_secure(void);
-
-#endif /* FRAMER_H_ */
+#endif /* __FRAMER_H__ */

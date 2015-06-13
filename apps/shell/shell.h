@@ -1,3 +1,23 @@
+/** \addtogroup apps
+ * @{ */
+
+/**
+ * \defgroup shell The Contiki shell
+ * @{
+ *
+ * The Contiki shell provides both interactive and batch processing
+ * for Contiki.
+ *
+ * The shell consists of two parts: the shell application and a shell
+ * back-end. The shell application contains all the logic of the
+ * shell, whereas the shell back-end provides I/O for the
+ * shell. Examples of shell back-ends are a serial I/O shell back-end,
+ * that allows the shell to operate over a serial connection, and a
+ * telnet server back-end, that allows the shell to operate over a
+ * TCP/IP telnet connection.
+ *
+ */
+
 /*
  * Copyright (c) 2008, Swedish Institute of Computer Science.
  * All rights reserved.
@@ -37,28 +57,8 @@
  *         Adam Dunkels <adam@sics.se>
  */
 
-/** \addtogroup apps
- * @{ */
-
-/**
- * \defgroup shell The Contiki shell
- * @{
- *
- * The Contiki shell provides both interactive and batch processing
- * for Contiki.
- *
- * The shell consists of two parts: the shell application and a shell
- * back-end. The shell application contains all the logic of the
- * shell, whereas the shell back-end provides I/O for the
- * shell. Examples of shell back-ends are a serial I/O shell back-end,
- * that allows the shell to operate over a serial connection, and a
- * telnet server back-end, that allows the shell to operate over a
- * TCP/IP telnet connection.
- *
- */
-
-#ifndef SHELL_H_
-#define SHELL_H_
+#ifndef __SHELL_H__
+#define __SHELL_H__
 
 #include "sys/process.h"
 
@@ -374,6 +374,7 @@ struct shell_input {
 
 #include "shell-base64.h"
 #include "shell-blink.h"
+#include "shell-checkpoint.h"
 #include "shell-collect-view.h"
 #include "shell-coffee.h"
 #include "shell-download.h"
@@ -382,6 +383,7 @@ struct shell_input {
 #include "shell-httpd.h"
 #include "shell-irc.h"
 #include "shell-memdebug.h"
+#include "shell-netfile.h"
 #include "shell-netperf.h"
 #include "shell-netstat.h"
 #include "shell-ping.h"
@@ -409,7 +411,7 @@ struct shell_input {
 #include "shell-vars.h"
 #include "shell-wget.h"
 
-#endif /* SHELL_H_ */
+#endif /* __SHELL_H__ */
 
 
 /** @} */

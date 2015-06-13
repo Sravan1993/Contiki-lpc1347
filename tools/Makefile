@@ -1,4 +1,4 @@
-all: tunslip
+all: codeprop tunslip
 
 gitclean:
 	@git clean -d -x -n ..

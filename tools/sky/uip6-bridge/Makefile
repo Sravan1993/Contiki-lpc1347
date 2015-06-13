@@ -6,7 +6,8 @@ CONTIKI=../../..
 endif
 endif
 
-DEFINES=WITH_SLIP=1,PROJECT_CONF_H=\"bridge-conf.h\"
+DEFINES=WITH_UIP6=1,WITH_SLIP=1,PROJECT_CONF_H=\"bridge-conf.h\"
+UIP_CONF_IPV6=1
 
 ifndef TARGET
 TARGET=sky
@@ -21,7 +22,6 @@ upload: uip6-bridge-tap.ihex
 	cp $< $(IHEXFILE)
 	$(MAKE) sky-u.$(subst /,-,$(word $(MOTE), $(MOTES)))
 
-CONTIKI_WITH_IPV6 = 1
 include $(CONTIKI)/Makefile.include
 
 ../../tapslip6: ../../tapslip6.c

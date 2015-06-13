@@ -1,4 +1,4 @@
-basedirs	:= core cpu platform apps
+basedirs	:= core cpu platform
 manuals		:= $(shell find ./ -name "*.txt")
 filetypes	:= -iwholename "*/doc/*.txt"
 empty		:=
@@ -23,23 +23,22 @@ endif
 
 .PHONY: clean html pdf upload
 
-html: init doxygen.log
+html: init doxygen
 
 pdf: doclatex = YES
-pdf: init doxygen.log
+pdf: init doxygen
 	gmake -C latex refman.pdf
 
 init:
 	@echo "> Scanning files"
 
 # This target requires and graphviz and doxygen
-doxygen.log: docdirs = $(sort $(foreach dir,$(basedirs),${shell find ../${dir} -type d -not -path "*/.*" -not -path "*/obj_*"}))
-doxygen.log: docsrc = $(docdirs) $(foreach dir,$(docdirs),${shell find $(dir) -type f $(filetypes)}) $(manuals)
-doxygen.log:
+doxygen: docdirs = $(foreach dir,$(basedirs),${shell find ../${dir} -type d -not -path "*/.*" -not -path "*/obj_*"})
+doxygen: docsrc = $(docdirs) $(foreach dir,$(docdirs),${shell find $(dir) -type f $(filetypes)}) $(manuals)
+doxygen:
 	@doxygen Doxyfile
 	@echo "Done, errorlog follows:"
 	@echo ""
-	@touch doxygen.log
 	@cat "doxygen.log"
 
 clean:

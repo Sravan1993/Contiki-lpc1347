@@ -16,7 +16,7 @@ CONTIKI_CPU=$(CONTIKI_CPU_ARM)/lpc1347
 CONTIKI_CPU_DIRS = . 
 CONTIKI_CPU_DIRS += ./common/CMSIS $(CONTIKI_CPU_ARM)/common/
 
-LPC1347 = clock.c system_LPC13Uxx.c startup_lpc13u_gnumake.c rtimer-arch.c gpio.c syscalls.c #cr_startup_lpc13u.c
+LPC1347 = clock.c system_LPC13Uxx.c startup_lpc13u_gnumake.c timer16.c rtimer-arch.c gpio.c clkconfig.c #syscalls.c #cr_startup_lpc13u.c
 
 #TARGETLIBS =	$(STDPERIPH_SRC) $(USB_OTG_SRC) $(USB_DEVICE_CORE_SRC) \
 #				$(USB_DEVICE_CLASS_CDC_SRC) random.c watchdog.c \
@@ -68,7 +68,7 @@ LINKERSCRIPT = $(CONTIKI_CPU)/lpc1347.ld
 #PROG=qstlink
 PROG=openocd
 
-ARCH_FLAGS = -mlittle-endian -mthumb -mcpu=cortex-m3
+ARCH_FLAGS = -mlittle-endian -mthumb -mthumb-interwork -mcpu=cortex-m3
 
 # Hard float
 #ARCH_FLAGS += -fsingle-precision-constant -Wdouble-promotion
@@ -89,6 +89,8 @@ CFLAGSNO = -I. -I$(CONTIKI)/core -I$(CONTIKI_CPU) -I$(CONTIKI_CPU)/loader -I$(CO
 CFLAGS += $(CFLAGSNO) -DRUN_AS_SYSTEM -DROM_RUN
 LDFLAGS += -L $(CONTIKI_CPU) -T $(LINKERSCRIPT) \
            -nostartfiles
+
+LDFLAGS += --specs=rdimon.specs -lc -lrdimon
 
 ifeq ($(DEBUG_BUILD),1)
 CFLAGS  += -O0 -g

@@ -12,8 +12,9 @@ static int yellow_on = 0;
 //static int red_on = 0;
 
 void leds_arch_init(void) {
-	 GPIOSetDir( 1,14, 1 );
-	 GPIOSetDir( 1,13, 1 );
+	//LPC_SYSCON->SYSAHBCLKCTRL |= (1<<6);
+	GPIOSetDir( 1,14, 1 );
+	GPIOSetDir( 1,13, 1 );
 }
 
 unsigned char leds_arch_get(void) {

@@ -3,9 +3,9 @@
  * compile. Allows you to save needing to compile all of uIP in just
  * to get a few things */
 
-#define NETSTACK_CONF_WITH_IPV6 1
+#define UIP_CONF_IPV6 1
 
-#include "net/ip/uip.h"
+#include "net/uip.h"
 #include <stdio.h>
 #include <arpa/inet.h>
 

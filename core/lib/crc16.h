@@ -1,3 +1,25 @@
+/** \addtogroup lib
+ * @{ */
+
+/**
+ * \defgroup crc16 Cyclic Redundancy Check 16 (CRC16) calculation
+ *
+ * The Cyclic Redundancy Check 16 is a hash function that produces a
+ * checksum that is used to detect errors in transmissions. The CRC16
+ * calculation module is an iterative CRC calculator that can be used
+ * to cumulatively update a CRC checksum for every incoming byte.
+ *
+ * @{
+ */
+
+/**
+ * \file
+ *         Header file for the CRC16 calculcation
+ * \author
+ *         Adam Dunkels <adam@sics.se>
+ *
+ */
+
 /*
  * Copyright (c) 2005, Swedish Institute of Computer Science
  * All rights reserved.
@@ -29,31 +51,8 @@
  * This file is part of the Contiki operating system.
  *
  */
-
-/**
- * \file
- *         Header file for the CRC16 calculcation
- * \author
- *         Adam Dunkels <adam@sics.se>
- *
- */
-
-/** \addtogroup lib
- * @{ */
-
-/**
- * \defgroup crc16 Cyclic Redundancy Check 16 (CRC16) calculation
- *
- * The Cyclic Redundancy Check 16 is a hash function that produces a
- * checksum that is used to detect errors in transmissions. The CRC16
- * calculation module is an iterative CRC calculator that can be used
- * to cumulatively update a CRC checksum for every incoming byte.
- *
- * @{
- */
-
-#ifndef CRC16_H_
-#define CRC16_H_
+#ifndef __CRC16_H__
+#define __CRC16_H__
 
 /**
  * \brief      Update an accumulated CRC16 checksum with one byte.
@@ -77,7 +76,7 @@ unsigned short crc16_add(unsigned char b, unsigned short crc);
  * \brief      Calculate the CRC16 over a data area
  * \param data Pointer to the data
  * \param datalen The length of the data
- * \param acc  The accumulated CRC that is to be updated (or zero).
+ * \param crc  The accumulated CRC that is to be updated (or zero).
  * \return     The CRC16 checksum.
  *
  *             This function calculates the CRC16 checksum of a data area.
@@ -90,7 +89,7 @@ unsigned short crc16_add(unsigned char b, unsigned short crc);
 unsigned short crc16_data(const unsigned char *data, int datalen,
 			  unsigned short acc);
 
-#endif /* CRC16_H_ */
+#endif /* __CRC16_H__ */
 
 /** @} */
 /** @} */

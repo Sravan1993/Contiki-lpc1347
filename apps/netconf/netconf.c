@@ -113,7 +113,7 @@ makestrings(void)
   makeaddr(&addr, gateway);
 
 #if UIP_UDP
-  addrptr = uip_nameserver_get(0);
+  addrptr = resolv_getserver();
   if(addrptr != NULL) {
     makeaddr(addrptr, dnsserver);
   }
@@ -152,7 +152,7 @@ apply_tcpipconfig(void)
 #if UIP_UDP
   nullterminate(dnsserver);
   if(uiplib_ipaddrconv(dnsserver, &addr)) {
-    uip_nameserver_update(&addr, UIP_NAMESERVER_INFINITE_LIFETIME);
+    resolv_conf(&addr);
   }
 #endif /* UIP_UDP */
 }

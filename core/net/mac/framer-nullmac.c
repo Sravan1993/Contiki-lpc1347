@@ -51,16 +51,10 @@
 #endif
 
 struct nullmac_hdr {
-  linkaddr_t receiver;
-  linkaddr_t sender;
+  rimeaddr_t receiver;
+  rimeaddr_t sender;
 };
 
-/*---------------------------------------------------------------------------*/
-static int
-hdr_length(void)
-{
-  return sizeof(struct nullmac_hdr);
-}
 /*---------------------------------------------------------------------------*/
 static int
 create(void)
@@ -69,11 +63,11 @@ create(void)
 
   if(packetbuf_hdralloc(sizeof(struct nullmac_hdr))) {
     hdr = packetbuf_hdrptr();
-    linkaddr_copy(&(hdr->sender), &linkaddr_node_addr);
-    linkaddr_copy(&(hdr->receiver), packetbuf_addr(PACKETBUF_ADDR_RECEIVER));
+    rimeaddr_copy(&(hdr->sender), &rimeaddr_node_addr);
+    rimeaddr_copy(&(hdr->receiver), packetbuf_addr(PACKETBUF_ADDR_RECEIVER));
     return sizeof(struct nullmac_hdr);
   }
-  PRINTF("PNULLMAC-UT: too large header: %u\n", sizeof(struct nullmac_hdr));
+  PRINTF("PNULLMAC-UT: too large header: %u\n", len);
   return FRAMER_FAILED;
 }
 /*---------------------------------------------------------------------------*/
@@ -89,7 +83,7 @@ parse(void)
     PRINTF("PNULLMAC-IN: ");
     PRINTADDR(packetbuf_addr(PACKETBUF_ADDR_SENDER));
     PRINTADDR(packetbuf_addr(PACKETBUF_ADDR_RECEIVER));
-    PRINTF("%u (%u)\n", packetbuf_datalen(), sizeof(struct nullmac_hdr));
+    PRINTF("%u (%u)\n", packetbuf_datalen(), len);
 
     return sizeof(struct nullmac_hdr);
   }
@@ -97,8 +91,5 @@ parse(void)
 }
 /*---------------------------------------------------------------------------*/
 const struct framer framer_nullmac = {
-  hdr_length,
-  create,
-  framer_canonical_create_and_secure,
-  parse
+  create, parse
 };

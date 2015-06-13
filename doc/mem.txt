@@ -1,4 +1,5 @@
 /**
 \defgroup mem Memory functions
-\ingroup lib
+@{
 */
+/** @} */

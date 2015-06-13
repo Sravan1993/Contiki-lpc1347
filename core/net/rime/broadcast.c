@@ -1,3 +1,8 @@
+/**
+ * \addtogroup rimebroadcast
+ * @{
+ */
+
 /*
  * Copyright (c) 2006, Swedish Institute of Computer Science.
  * All rights reserved.
@@ -31,11 +36,6 @@
  */
 
 /**
- * \addtogroup rimeibc
- * @{
- */
-
-/**
  * \file
  *         Identified best-effort local area broadcast (broadcast)
  * \author
@@ -62,13 +62,13 @@ static const struct packetbuf_attrlist attributes[] =
 static void
 recv_from_abc(struct abc_conn *bc)
 {
-  linkaddr_t sender;
+  rimeaddr_t sender;
   struct broadcast_conn *c = (struct broadcast_conn *)bc;
 
-  linkaddr_copy(&sender, packetbuf_addr(PACKETBUF_ADDR_SENDER));
+  rimeaddr_copy(&sender, packetbuf_addr(PACKETBUF_ADDR_SENDER));
   
   PRINTF("%d.%d: broadcast: from %d.%d\n",
-	 linkaddr_node_addr.u8[0],linkaddr_node_addr.u8[1],
+	 rimeaddr_node_addr.u8[0],rimeaddr_node_addr.u8[1],
 	 sender.u8[0], sender.u8[1]);
   if(c->u->recv) {
     c->u->recv(c, &sender);
@@ -81,7 +81,7 @@ sent_by_abc(struct abc_conn *bc, int status, int num_tx)
   struct broadcast_conn *c = (struct broadcast_conn *)bc;
 
   PRINTF("%d.%d: sent to %d.%d status %d num_tx %d\n",
-	 linkaddr_node_addr.u8[0],linkaddr_node_addr.u8[1],
+	 rimeaddr_node_addr.u8[0],rimeaddr_node_addr.u8[1],
 	 packetbuf_addr(PACKETBUF_ADDR_SENDER)->u8[0],
          packetbuf_addr(PACKETBUF_ADDR_SENDER)->u8[1],
          status, num_tx);
@@ -111,8 +111,8 @@ int
 broadcast_send(struct broadcast_conn *c)
 {
   PRINTF("%d.%d: broadcast_send\n",
-	 linkaddr_node_addr.u8[0],linkaddr_node_addr.u8[1]);
-  packetbuf_set_addr(PACKETBUF_ADDR_SENDER, &linkaddr_node_addr);
+	 rimeaddr_node_addr.u8[0],rimeaddr_node_addr.u8[1]);
+  packetbuf_set_addr(PACKETBUF_ADDR_SENDER, &rimeaddr_node_addr);
   return abc_send(&c->c);
 }
 /*---------------------------------------------------------------------------*/

@@ -66,13 +66,14 @@ static void platform_init();
 int main()
 {
   platform_init();
-  //printf("Initializing\n");
+  printf("Initializing\n");
 
-  clock_init();
-  process_init();
+  //clock_init();
+  printf("clock init done");
+  //process_init();
   process_start(&etimer_process, NULL);
-  //autostart_start(autostart_processes);
-  //printf("Processes running\n");
+  autostart_start(autostart_processes);
+  printf("Processes running\n");
   while(1) {
     do {
     } while(process_run() > 0);
@@ -96,8 +97,8 @@ static void platform_init() {
 	 * Disable STDOUT buffering. Otherwise nothing will be printed
 	 * before a newline character or when the buffer is flushed.
 	 */
-	setbuf(stdout, NULL);
-
+	//setbuf(stdout, NULL);
+	process_init();
 	clock_init();
 	leds_init();
 

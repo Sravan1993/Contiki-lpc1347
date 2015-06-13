@@ -1,3 +1,35 @@
+/**
+ * \addtogroup rime
+ * @{
+ */
+
+/**
+ * \defgroup rimestunicast Stubborn unicast
+ * @{
+ *
+ * The stubborn single-hop unicast primitive (stunicast) repeatedly
+ * sends a packet to a single-hop neighbor using the unicast
+ * primitive.  The stunicast primitive sends and resends the packet
+ * until an upper layer primitive or protocol cancels the
+ * transmission.  While it is possible for applications and protocols
+ * that use Rime to use the stubborn single-hop unicast primitive
+ * directly, the stunicast primitive is primarily used by the reliable
+ * single-hop unicast (runicast) primitive.
+ *
+ * Before the stunicast primitive sends a packet, it allocates a queue
+ * buffer, to which the application data and packet attributes is
+ * copied, and sets a timer.  When the timer expires, the stunicast
+ * primitive copies the queue buffer to the Rime buffer and sends the
+ * packet using the unicast primitive.  The stunicast primitive sets the
+ * number of retransmissions for a packet as a packet attribute on 
+ * outgoing packets.
+ *
+ * \section channels Channels
+ *
+ * The stunicast module uses 1 channel.
+ *
+ */
+
 /*
  * Copyright (c) 2006, Swedish Institute of Computer Science.
  * All rights reserved.
@@ -37,40 +69,8 @@
  *         Adam Dunkels <adam@sics.se>
  */
 
-/**
- * \addtogroup rime
- * @{
- */
-
-/**
- * \defgroup rimestunicast Stubborn unicast
- * @{
- *
- * The stubborn single-hop unicast primitive (stunicast) repeatedly
- * sends a packet to a single-hop neighbor using the unicast
- * primitive.  The stunicast primitive sends and resends the packet
- * until an upper layer primitive or protocol cancels the
- * transmission.  While it is possible for applications and protocols
- * that use Rime to use the stubborn single-hop unicast primitive
- * directly, the stunicast primitive is primarily used by the reliable
- * single-hop unicast (runicast) primitive.
- *
- * Before the stunicast primitive sends a packet, it allocates a queue
- * buffer, to which the application data and packet attributes is
- * copied, and sets a timer.  When the timer expires, the stunicast
- * primitive copies the queue buffer to the Rime buffer and sends the
- * packet using the unicast primitive.  The stunicast primitive sets the
- * number of retransmissions for a packet as a packet attribute on 
- * outgoing packets.
- *
- * \section stunicast-channels Channels
- *
- * The stunicast module uses 1 channel.
- *
- */
-
-#ifndef STUNICAST_H_
-#define STUNICAST_H_
+#ifndef __STUNICAST_H__
+#define __STUNICAST_H__
 
 #include "sys/ctimer.h"
 #include "net/rime/unicast.h"
@@ -81,7 +81,7 @@ struct stunicast_conn;
 #define STUNICAST_ATTRIBUTES  UNICAST_ATTRIBUTES
 
 struct stunicast_callbacks {
-  void (* recv)(struct stunicast_conn *c, const linkaddr_t *from);
+  void (* recv)(struct stunicast_conn *c, const rimeaddr_t *from);
   void (* sent)(struct stunicast_conn *c, int status, int num_tx);
 };
 
@@ -90,23 +90,23 @@ struct stunicast_conn {
   struct ctimer t;
   struct queuebuf *buf;
   const struct stunicast_callbacks *u;
-  linkaddr_t receiver;
+  rimeaddr_t receiver;
 };
 
 void stunicast_open(struct stunicast_conn *c, uint16_t channel,
 	       const struct stunicast_callbacks *u);
 void stunicast_close(struct stunicast_conn *c);
 
-int stunicast_send_stubborn(struct stunicast_conn *c, const linkaddr_t *receiver,
+int stunicast_send_stubborn(struct stunicast_conn *c, const rimeaddr_t *receiver,
 		      clock_time_t rxmittime);
 void stunicast_cancel(struct stunicast_conn *c);
 
-int stunicast_send(struct stunicast_conn *c, const linkaddr_t *receiver);
+int stunicast_send(struct stunicast_conn *c, const rimeaddr_t *receiver);
 
 void stunicast_set_timer(struct stunicast_conn *c, clock_time_t t);
 
-linkaddr_t *stunicast_receiver(struct stunicast_conn *c);
+rimeaddr_t *stunicast_receiver(struct stunicast_conn *c);
 
-#endif /* STUNICAST_H_ */
+#endif /* __STUNICAST_H__ */
 /** @} */
 /** @} */
