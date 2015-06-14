@@ -8,6 +8,8 @@
 #include "contiki.h"
 #include "dev/leds.h"
 
+#define DEBUG 1
+
 //#include <stdio.h>
 
 /*---------------------------------------------------------------------------*/
