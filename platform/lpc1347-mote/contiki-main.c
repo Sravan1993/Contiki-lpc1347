@@ -68,9 +68,9 @@ int main()
   platform_init();
   printf("Initializing\n");
 
-  //clock_init();
-  printf("clock init done");
-  //process_init();
+
+  printf("Clock init done\n");
+
   process_start(&etimer_process, NULL);
   autostart_start(autostart_processes);
   printf("Processes running\n");
@@ -98,8 +98,8 @@ static void platform_init() {
 	 * before a newline character or when the buffer is flushed.
 	 */
 	//setbuf(stdout, NULL);
-	process_init();
 	clock_init();
+	process_init();
 	leds_init();
 
 //#if WITH_UIP

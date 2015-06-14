@@ -108,7 +108,7 @@ process_start(struct process *p, const char *arg)
   if(q == p) {
     return;
   }
-  /* Put on the procs list.*/
+  /* Put on the process list.*/
   p->next = process_list;
   process_list = p;
   p->state = PROCESS_STATE_RUNNING;
