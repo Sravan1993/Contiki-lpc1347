@@ -25,7 +25,7 @@ PROCESS_THREAD(hello_world_process, ev, data)
 	
 	PROCESS_BEGIN();
 
-	printf("Hello, world\r\n");
+	//printf("Hello, world\r\n");
 	//cc2520_set_txpower(0x13);
 	//printf("TX Power 0x%0X\r\n", cc2520_get_txpower());
 	

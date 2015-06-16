@@ -66,14 +66,14 @@ static void platform_init();
 int main()
 {
   platform_init();
-  printf("Initializing\n");
+  //printf("Initializing\n");
 
 
-  printf("Clock init done\n");
+  //printf("Clock init done\n");
 
   process_start(&etimer_process, NULL);
   autostart_start(autostart_processes);
-  printf("Processes running\n");
+  //printf("Processes running\n");
   while(1) {
     do {
     } while(process_run() > 0);
