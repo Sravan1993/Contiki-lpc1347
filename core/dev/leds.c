@@ -69,6 +69,8 @@ leds_init(void)
 {
   leds_arch_init();
   leds = invert = 0;
+  leds_blink();
+  leds_blink();
 }
 /*---------------------------------------------------------------------------*/
 void

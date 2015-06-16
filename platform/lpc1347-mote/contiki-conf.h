@@ -43,6 +43,7 @@
 #define CCIF
 #define CLIF
 
+//#define CC_CONF_VA_ARGS                0
 /*
  * Definitions below are dictated by the hardware and not really
  * changeable!

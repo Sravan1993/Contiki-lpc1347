@@ -35,7 +35,7 @@ void leds_arch_set(unsigned char leds) {
 		GPIOSetBitValue( 1,14, 1 );
 		yellow_on = 1;
 	} else {
-		GPIOSetBitValue( 1,13, 0 );
+		GPIOSetBitValue( 1,14, 0 );
 		yellow_on = 0;
 	}
 	

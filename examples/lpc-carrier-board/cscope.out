@@ -1,0 +1,129 @@
+cscope 15 $HOME/Documents/Project/Contiki-lpc1347/examples/lpc-carrier-board               0000000810
+	@hello-world.c
+
+8 
+	~"cÚtiki.h
+"
+
+9 
+	~"dev/Ëds.h
+"
+
+11 
+	#DEBUG
+ 1
+
+	)
+
+16 
+PROCESS
+(
+h–lo_wÜld_´oûss
+, "Hello world…rocess");
+
+17 
+AUTOSTART_PROCESSES
+(&
+h–lo_wÜld_´oûss
+);
+
+20 
+Ëds_toggË
+(
+Ëds
+);
+
+22 
+	$PROCESS_THREAD
+(
+h–lo_wÜld_´oûss
+, 
+ev
+, 
+d©a
+)
+
+24 
+‘im”
+ 
+tim”
+;
+
+26 
+	`PROCESS_BEGIN
+();
+
+28 
+	`´štf
+("Hello, world\r\n");
+
+40 
+	`‘im”_£t
+(&
+tim”
+, 
+CLOCK_CONF_SECOND
+ / 2);
+
+44 
+	`PROCESS_WAIT_EVENT_UNTIL
+(
+ev
+ =ð
+PROCESS_EVENT_TIMER
+);
+
+49 
+	`Ëds_blšk
+();
+
+51 
+	`‘im”_»£t
+(&
+tim”
+);
+
+54 
+	`PROCESS_END
+();
+
+55 
+	}
+}
+
+	@symbols.c
+
+1 
+	~"symbÞs.h
+"
+
+3 cÚ¡ 
+	gsymbÞs_ÃÉs
+ = 0;
+
+4 cÚ¡ 
+symbÞs
+ 
+	gsymbÞs
+[] = {{0,0}};
+
+	@symbols.h
+
+1 
+	~"lßd”/symbÞs.h
+"
+
+3 cÚ¡ 
+symbÞs
+ symbols[1];
+
+	@
+1
+.
+1
+/usr/include
+3
+34
+hello-world.c
+symbols.c
+symbols.h
