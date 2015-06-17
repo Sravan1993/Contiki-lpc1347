@@ -1,9 +1,9 @@
-/****************************************************************************
+/***************************************************************************
  *   $Id:: timer16.h 6956 2011-03-23 23:03:25Z usb00423                     $
  *   Project: NXP LPC13Uxx software example
  *
  *   Description:
- *     This file contains definition and prototype for 16-bit timer 
+ *     This file contains definition and prototype for 16-bit timer
  *     configuration.
  *
  ****************************************************************************
@@ -18,7 +18,7 @@
  * warranty that such application will be suitable for the specified
  * use without further testing or modification.
 ****************************************************************************/
-#ifndef __TIMER16_H 
+#ifndef __TIMER16_H
 #define __TIMER16_H
 
 /* The test is either MAT_OUT or CAP_IN. Default is MAT_OUT. */

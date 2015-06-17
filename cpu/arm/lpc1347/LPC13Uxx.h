@@ -21,9 +21,11 @@
   * @{
   */
 
-/** @addtogroup LPC13Uxx
-  * @{
-  */
+#define __CM3_REV              0x0000       /*!< Cortex-M3 Core Revision               */
+#define __MPU_PRESENT             0         /*!< MPU present or not                    */
+#define __NVIC_PRIO_BITS          3         /*!< Number of Bits used for Priority Levels */
+#define __Vendor_SysTickConfig    0         /*!< Set to 1 if different SysTick Config is used */
+/** @} */ /* End of group Configuration_of_CMSIS */
 
 #ifndef __LPC13UXX_H__
 #define __LPC13UXX_H__

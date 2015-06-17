@@ -52,17 +52,27 @@
 #define PLATFORM_HAS_LEDS   1
 
 // Types for clocks and uip_stats
-typedef unsigned long clock_time_t;
 //typedef uint64_t clock_time_t;
 
-typedef uint8_t   u8_t;
+/* These names are deprecated, use C99 names. */
+typedef uint8_t u8_t;
 typedef uint16_t u16_t;
 typedef uint32_t u32_t;
+typedef int8_t s8_t;
+typedef int16_t s16_t;
 typedef int32_t s32_t;
-typedef unsigned short uip_stats_t;
+
+typedef unsigned int clock_time_t;
+typedef unsigned int uip_stats_t;
+
+/*
+ * rtimer.h typedefs rtimer_clock_t as unsigned short. We need to define
+ * RTIMER_CLOCK_LT to override this
+ */
+typedef uint32_t rtimer_clock_t;
 
 #define ENERGEST_TOTAL_IS_RTIMER_T
-typedef uint64_t rtimer_clock_t;
+//typedef uint64_t rtimer_clock_t;
 #define RTIMER_CLOCK_LT(a,b)     ((signed short)((a)-(b)) < 0)
 
 // the low-level radio driver

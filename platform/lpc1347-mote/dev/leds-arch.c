@@ -6,6 +6,9 @@
 #include "contiki.h"
 #include "dev/leds.h"
 #include "LPC13Uxx.h"
+#include <gpio.h>
+
+//#define LEDS_PORT LPC_GPIO->MPIN[PORT1]
 
 static int green_on = 0;
 static int yellow_on = 0;
@@ -13,8 +16,8 @@ static int yellow_on = 0;
 
 void leds_arch_init(void) {
 	//LPC_SYSCON->SYSAHBCLKCTRL |= (1<<6);
-	GPIOSetDir( 1,14, 1 );
-	GPIOSetDir( 1,13, 1 );
+	GPIOSetDir( PORT1,14, 1 );
+	GPIOSetDir( PORT1,13, 1 );
 }
 
 unsigned char leds_arch_get(void) {
@@ -30,7 +33,7 @@ void leds_arch_set(unsigned char leds) {
 		GPIOSetBitValue( 1,13, 0 );
 		green_on = 0;
 	}
-	
+
 	if(leds & LEDS_YELLOW) {
 		GPIOSetBitValue( 1,14, 1 );
 		yellow_on = 1;
@@ -38,7 +41,7 @@ void leds_arch_set(unsigned char leds) {
 		GPIOSetBitValue( 1,14, 0 );
 		yellow_on = 0;
 	}
-	
+
 /*	if(leds & LEDS_RED) {
 		GPIO_SetBits(GPIOA, GPIO_Pin_3);
 		red_on = 1;
